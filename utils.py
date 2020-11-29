@@ -104,7 +104,7 @@ def predict_retinanet(net,image, th=0.5):
     '''
     INPUT
         net: trained Retinanet model 
-        imgage: image in BGR format
+        image: image in BGR format
 
     OUTPUT
         Returns the bounding boxes as a np.array. Each row is a bounding box, each column is
