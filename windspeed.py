@@ -65,6 +65,7 @@ def run_script(path, th, out_dir, steps):
 
     # print csv
     csv = [im + ', ' + res[im] for im in res]
+    csv.append('')
     with open(out_dir + os.sep + 'wind_result.csv', 'w') as w:
         w.write('\n'.join(csv))
 
