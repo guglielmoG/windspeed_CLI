@@ -79,7 +79,7 @@ By default, a docker container is isolated from the host system, however it may 
 Please note that these have to be _absolute_ paths. For example, assuming you cloned the repo in `~`, you could run
 
 ```
-cd ~
+cd ~/windspeed_CLI
 mkdir out
 docker run -v ~/windspeed_CLI/out:/app/out -it wind bash
 ```
