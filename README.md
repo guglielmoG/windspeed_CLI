@@ -25,7 +25,7 @@ this can take some time, as it is setting up the environment. When you are ready
 
 `docker run -it wind bash`
 
-you are presented with a terminal inside the container. Now you can test use the utility on a sample image provided with the repo
+you are presented with a terminal inside the container. Now you can test the utility on a sample image provided with the repo
 
 `python windspeed.py test/test.png`
 
@@ -40,10 +40,10 @@ To use the utility, you can just call it by supplying a path
  If _path_ is a folder, it applies the routine on each image within the folder. Internally, the process is divided into three steps:
 
 1. Wind indicators (e.g. flags) are identified within each picture
-2. For each indicator, it estimates the probability of _absent_, _weak_ and _strong_ wind **in the image**, based on the information carried by the **single **indicator only
+2. For each indicator, it estimates the probability of _absent_, _weak_ and _strong_ wind **in the image**, based on the information carried by the **single** indicator only
 3. It combines estimates from all the indicators to give one final prediction for the overall image
 
-The intuition for the last step is that not all indicators may be perfectly representative of wind intensity, as some maybe be protected by other objects or another indicator, hence receiving less wind. Averaging helps in reducing this variability.
+The intuition for the last step is that not all indicators may be perfectly representative of wind intensity, as some could be protected by other objects or another indicator, hence receiving less wind. Averaging helps in reducing this variability.
 
 The result is stored in `./out` by default, but this behavior can be changed by passing the _-o_ flag 
 
@@ -55,27 +55,28 @@ The default output is a csv file, `wind_result.csv`, containing wind intensity i
 test.png, weak
 ```
 
-Additionally, one may want to display intermediate steps, namely the visualization of step 1 and step 2 above. In case of _test.png_ for example, one would get
+Additionally, one may want to display intermediate steps, namely the visualization of step 1 and step 2 above, this can be done by setting the flag _--show-steps_. In case of _test.png_ for example, one would get
 
 **Step 1**
 
-![](data\flag_test2.png)
+![](data/flag_test2.png)
 
 
 
 **Step 2**
 
-![](data\wind_test2.png)
+![](data/wind_test2.png)
 
-
+For more information on the utility, run
+`python windspeed.py -h`
 
 # Advanced
 
-By default, a docker container is isolated from the host system, however it may be handy to exchange data with the image, be this input for the utility, or to retrieve its output. To this end, one can mount a volume in Linux as
+By default, a docker container is isolated from the host system, however it may be useful to exchange data with the image, be this input for the utility, or to retrieve its output. To this end, one can mount a volume in Linux as
 
 `docker run -v /host/path:/docker/path -it wind bash`
 
-One note, these have to be absolute paths. For example, assuming you cloned the repo in `~`, you could run
+Please note that these have to be _absolute_ paths. For example, assuming you cloned the repo in `~`, you could run
 
 ```
 cd ~
