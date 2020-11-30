@@ -72,6 +72,12 @@ For more information on the utility, run
 
 # Advanced
 
+### GPU
+
+To enable GPU computation you need to provide the flag _--gpus all_ to docker run. Please make sure you have [NVIDIA Docker support](https://github.com/NVIDIA/nvidia-docker) installed and that your GPU is among the [supported ones](https://www.tensorflow.org/install/gpu#hardware_requirements).
+
+### Volume Mount
+
 By default, a docker container is isolated from the host system, however it may be useful to exchange data with the image, be this input for the utility, or to retrieve its output. To this end, one can mount a volume in Linux as
 
 `docker run -v /host/path:/docker/path -it wind bash`
