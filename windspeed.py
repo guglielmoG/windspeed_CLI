@@ -56,7 +56,8 @@ def run_script(path, th, out_dir, steps):
         return
         
     if not os.path.exists(out_dir):
-        if os.path.exists(os.path.dirname(out_dir)):
+        base_dir = os.path.dirname(out_dir)
+        if os.path.exists() or base_dir == '':
             os.mkdir(out_dir)
         else:
             logger.error('The system cannot find the path specified: "{}"'.format(out_dir))
@@ -66,7 +67,7 @@ def run_script(path, th, out_dir, steps):
         if os.path.isdir(path):
             res = utils.bulk_pred_2step(path, th, steps, out_dir)
         elif video:
-            video_pred_2step(path, out_dir, th)
+            utils.video_pred_2step(path, out_dir, th)
         else:
             res = utils.img_pred_2step(path, th, steps, out_dir)
     else:
