@@ -27,7 +27,7 @@ this can take some time, as it is setting up the environment. When you are ready
 
 you are presented with a terminal inside the container. Now you can test the utility on a sample image provided with the repo
 
-`python windspeed.py test/test.png`
+`python windspeed.py test/img_test.png`
 
 the result is stored by default in `./out`, but see below for more information.
 
@@ -47,15 +47,15 @@ The intuition for the last step is that not all indicators may be perfectly repr
 
 The result is stored in `./out` by default, but this behavior can be changed by passing the _-o_ flag 
 
-`python windspeed.py test/test.png -o some/dir`
+`python windspeed.py test/img_test.png -o some/dir`
 
 The default output is a csv file, `wind_result.csv`, containing wind intensity information for each image at _path_:
 
 ```
-test.png, weak
+img_test.png, weak
 ```
 
-Additionally, one may want to display intermediate steps, namely the visualization of step 1 and step 2 above, this can be done by setting the flag _--show-steps_. In case of _test.png_ for example, one would get
+Additionally, one may want to display intermediate steps, namely the visualization of step 1 and step 2 above, this can be done by setting the flag _--show-steps_. In case of _img\_test.png_ for example, one would get
 
 **Step 1**
 
@@ -71,6 +71,20 @@ For more information on the utility, run
 `python windspeed.py -h`
 
 # Advanced
+
+### Videos
+
+In same cases, it may be interesting to predict wind intensity for a video rather than a single or multiple images. This can be easily accomplished by passing the _--video_ flag:
+
+`python windspeed.py test/video_test_1fps.mp4 --video`
+
+Make sure that the file at path is actually a video! Also, notice that for same length videos, the higher the frame rate (fps), the higher the computational cost (greater number of frames to process). You may want to run it using a GPU (see below), or pre-process it to reduce the fps.
+
+Here is a sample output.
+
+![](data/video_10fps.gif)
+
+
 
 ### GPU
 
