@@ -11,6 +11,8 @@ parser.add_argument('-th', '--threshold', type=float, default=0.5, help='accepta
 parser.add_argument('-o', '--out-dir', default='out', help='output directory for csv and other script data. Defaults to ./out')
 parser.add_argument('--show-steps', action='store_true', help='store intermediate steps to out-dir')
 parser.add_argument('--video', action='store_true', help='interprets input path as video, output video frames are annotated with predicted wind speed.')
+parser.add_argument('--codec', default='mp4v', help='video codec, when passing --video flag. Note that this is platform dependent. Defaults to mp4v.')
+parser.add_argument('--ext', default='.mp4', help='video extension, when passing --video flag. Note that it usually depends on the codec. Defaults to .mp4.')
 parser.add_argument('-v', '--verbose', type=int, choices=[0,1,2], default=1, help='increase output verbosity. 0=info, 1=warning, 2=error. Default 1.')
 
 args = parser.parse_args()
@@ -21,6 +23,8 @@ out_dir = args.out_dir
 v = args.verbose
 steps = args.show_steps
 video = args.video
+codec = args.codec
+ext = args.ext
 
 # Set tensorflow verbosity. Needs to be done before importing it
 
@@ -50,14 +54,14 @@ formatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-def run_script(path, th, out_dir, steps):
+def run_script(path, th, out_dir, steps, video, codec, ext):
     if not 0 < th < 1:
         logger.error('Invalid threshold value, must be between 0 and 1.')
         return
         
     if not os.path.exists(out_dir):
         base_dir = os.path.dirname(out_dir)
-        if os.path.exists() or base_dir == '':
+        if os.path.exists(base_dir) or base_dir == '':
             os.mkdir(out_dir)
         else:
             logger.error('The system cannot find the path specified: "{}"'.format(out_dir))
@@ -67,7 +71,7 @@ def run_script(path, th, out_dir, steps):
         if os.path.isdir(path):
             res = utils.bulk_pred_2step(path, th, steps, out_dir)
         elif video:
-            utils.video_pred_2step(path, out_dir, th)
+            utils.video_pred_2step(path, out_dir, th, codec, ext)
         else:
             res = utils.img_pred_2step(path, th, steps, out_dir)
     else:
@@ -82,4 +86,4 @@ def run_script(path, th, out_dir, steps):
         with open(out_dir + os.sep + 'wind_result.csv', 'w') as w:
             w.write('\n'.join(csv))
 
-run_script(path, th, out_dir, steps)
+run_script(path, th, out_dir, steps, video, codec, ext)

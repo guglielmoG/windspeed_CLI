@@ -113,7 +113,7 @@ def _pred_2step_img(retnet, effnet, img_path, th=0.5, steps=False, out_dir='out'
     return {img_name:final_pred}
 
 
-def video_pred_2step(video_path, out_dir='out', th=0.5):
+def video_pred_2step(video_path, out_dir='out', th=0.5, codec='mp4v', ext='.mp4'):
     try:
         vin = cv2.VideoCapture(video_path)
     except Exception as e:
@@ -125,15 +125,15 @@ def video_pred_2step(video_path, out_dir='out', th=0.5):
         vin.release()
         return
     
-    video_name = os.path.basename(video_path)
+    video_name,_ = os.path.splitext(os.path.basename(video_path))
     
     try:
         fps = vin.get(cv2.CAP_PROP_FPS)
         width = int(vin.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(vin.get(cv2.CAP_PROP_FRAME_HEIGHT))
         res=(int(width), int(height))
-        fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-        vout = cv2.VideoWriter(join_path(out_dir,'wind_' + video_name), fourcc, fps, res)
+        fourcc = cv2.VideoWriter_fourcc(*codec)
+        vout = cv2.VideoWriter(join_path(out_dir,'wind_' + video_name + ext), fourcc, fps, res)
         _video_pred_2step(vin, vout, th)
     except Exception as e:
         logger.error('Failed to open video "{}". {}'.format(video_path, e))

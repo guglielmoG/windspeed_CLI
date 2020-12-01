@@ -84,7 +84,11 @@ Here is a sample output.
 
 ![](data/video_10fps.gif)
 
+Warning: video creation using _opencv_ (the library used in this CLI) is highly reliant on the video codecs installed on the system, therefore the default setting may not be fine for everyone. To modify that, one can specify the pair of _codec_ and _extension_ to be used, for example
 
+`python windspeed.py test/video_test_1fps.mp4 --video --codec mp4v --ext .mp4`
+
+This will create an _.mp4_ output video file encoded using _mp4v_. Another combination usually successful is `--codec MJPG --ext .avi`. Both have been tested opening the output video in Windows 10 using VLC. If none of these work, try changing them, or installing corresponding codecs for your platform.
 
 ### GPU
 
@@ -106,5 +110,6 @@ docker run -v ~/windspeed_CLI/out:/app/out -it wind bash
 
 For free, you can use the utilities' outputs (stored by default in _./out_) within the host system. Additionally, you can provide input to the utility by placing them in _out_.
 
-For Windows the command is similar, however an intermediate step must be [done]([Docker on Windows — Mounting Host Directories | by Romin Irani | Romin Irani's Blog](https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c)).
+For Windows Home edition running Docker 19.03 (and possibly all Docker versions reliant on WSL2), the command is similar
 
+`docker run -v D:\path\to\folder:/app/out -it wind bash`
