@@ -88,7 +88,7 @@ Warning: video creation using _opencv_ (the library used in this CLI) is highly 
 
 `python windspeed.py test/video_test_1fps.mp4 --video --codec mp4v --ext .mp4`
 
-This will create an _.mp4_ output video file encoded using _mp4v_. Another combination usually successful is `--codec MJPG --ext .avi`. Both have been tested opening the output video in Windows 10 using VLC. If none of these work, try changing them, or installing corresponding codecs for your platform.
+This will create an _.mp4_ output video file encoded using _mp4v_. Another combination usually successful is `--codec MJPG --ext .avi`. Default configuration tested in Windows 10 using VLC and in macOS Catalina. If none of these work, try changing them, or installing corresponding codecs for your platform.
 
 ### GPU
 
