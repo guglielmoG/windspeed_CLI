@@ -19,11 +19,12 @@ join_path = lambda *l: os.sep.join(l)
 
 def bulk_pred_2step(folder_path, th=0.5, steps=False, out_dir='out'):
     '''
-    Predicts wind intensity for all images in folder, according to the scale no wind, weak wind and strong wind (with respective class absent, weak, strong). Seeks flags, and based on the flags predicts the intensity. Returns -1 if no flags are found.
+    Predicts wind intensity for all images in folder, according to the scale absent, weak, and strong wind. Seeks flags, and based on the flags predicts the intensity. Returns -1 if no flags are found.
     INPUT:
         img_path: path to image
         th: acceptance threshold for flag detection algorithm
         steps: store intermediate steps to disk (input image with predicted flag confidence and input image with predicted wind intesity, per flag)
+        out_dir: directory where to store output
     OUTPUT:
         Dictionary, containing mapping image name -> predicted wind intensity
     '''
@@ -53,11 +54,12 @@ def bulk_pred_2step(folder_path, th=0.5, steps=False, out_dir='out'):
 
 def img_pred_2step(img_path, th=0.5, steps=False, out_dir='out'):
     '''
-    Predicts wind intensity from an image, according to the scale no wind, weak wind and strong wind (with respective class absent, weak, strong). Seeks flags, and based on the flags predicts the intensity. Returns -1 if no flags are found.
+    Predicts wind intensity from an image, according to the scale absent, weak, and strong wind. Seeks flags, and based on the flags predicts the intensity. Returns -1 if no flags are found.
     INPUT:
         img_path: path to image
         th: acceptance threshold for flag detection algorithm
         steps: store intermediate steps to disk (input image with predicted flag confidence and input image with predicted wind intesity, per flag)
+        out_dir: directory where to store output
     OUTPUT:
         Dictionary, containing mapping image name -> predicted wind intensity
     '''
@@ -76,7 +78,9 @@ def img_pred_2step(img_path, th=0.5, steps=False, out_dir='out'):
     
     
 def _pred_2step_img(retnet, effnet, img_path, th=0.5, steps=False, out_dir='out'):
-
+    '''
+    Backend function to improve code re-usability, not intended to be called from outside this module. 
+    '''
     img_name = os.path.basename(img_path)
     image = read_image_bgr(img_path)
     res = predict_retinanet(retnet, image, th)
@@ -114,6 +118,17 @@ def _pred_2step_img(retnet, effnet, img_path, th=0.5, steps=False, out_dir='out'
 
 
 def video_pred_2step(video_path, out_dir='out', th=0.5, codec='mp4v', ext='.mp4'):
+    '''
+    Predicts wind intensity from each frame of a video and writes the result to disk, as a new video. Wind intensity scale is absent, weak, and strong wind. Seeks flags, and based on the flags predicts the intensity. 
+    INPUT:
+        video__path: path to video
+        out_dir: directory where to store output video
+        th: acceptance threshold for flag detection algorithm
+        codec: codec to use when writing output video to disk
+        ext: extension to use for video
+    OUTPUT:
+        None. Stores annotated video to disk.
+    '''
     try:
         vin = cv2.VideoCapture(video_path)
     except Exception as e:
@@ -143,6 +158,9 @@ def video_pred_2step(video_path, out_dir='out', th=0.5, codec='mp4v', ext='.mp4'
     
     
 def _video_pred_2step(vin, vout, th):
+    '''
+    Backend function, not intended to be called from outside this module. 
+    '''
     retnet = models.load_model(join_path('models','retinanet_model.h5'), backbone_name='resnet50')
     
     effnet = load_model(join_path('models','efficientnet_final.h5'))
@@ -245,6 +263,9 @@ def get_flags(img_path,boxes,ratio=1.1,xml=True, new_dim=None):
     
 
 def _get_flags(img, boxes, ratio, xml, new_dim):
+    '''
+    Backend function to improve code re-usability, not intended to be called from outside this module. 
+    '''
     #img: img in PIL format
     
     boxes = enlarge_boxes(boxes,ratio,xml)
